@@ -182,6 +182,20 @@ func Hex(scol string) (Color, error) {
     return Color{float64(r)*factor, float64(g)*factor, float64(b)*factor}, nil
 }
 
+// Return solid int representaion of the color
+func (col Color) Int() int {
+    // Add 0.5 for rounding
+    return int(col.R*255.0+0.5)<<16 + int(col.G*255.0+0.5)<<8 + int(col.B*255.0+0.5)
+}
+
+// Deserialize solid int value to Color
+func Int(icol int) Color {
+    r := (icol & 0xFF0000) >> 16;
+    g := (icol & 0x00FF00) >> 8;
+    b := (icol & 0x0000FF) >> 0;
+    return Color{float64(r)/255.0, float64(g)/255.0, float64(b)/255.0}
+}
+
 /// Linear ///
 //////////////
 // http://www.sjbrown.co.uk/2004/05/14/gamma-correct-rendering/
